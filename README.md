@@ -12,6 +12,8 @@ module "module_lock" {
 
 This module will automatically create a hash of all files in each module and store them in a lock file (`.terraform.modules.lock.json`). On every subsequent run, it will check the hashes of each downloaded module and compare them with the lock file hash. If there's a difference, when the source or version haven't changed, it will halt the execution during the plan phase and throw an error.
 
+This module will throw an error if there are multiple instances of it in a single Terraform configuration (don't want multiple modules editing the same lockfile!), so don't include it in modules, only in root configurations.
+
 Note that it is still possible for malicious code to be injected and it may run before this module runs its checks. To prevent that, you can have all other modules depend on this one, preventing them from being run before this module completes its checks:
 ```
 module "module_lock" {
