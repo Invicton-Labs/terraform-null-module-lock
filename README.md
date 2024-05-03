@@ -1,5 +1,7 @@
 # Terraform Module Lock
 
+On the Terraform Registry: [https://registry.terraform.io/modules/Invicton-Labs/module-lock/null/latest](https://registry.terraform.io/modules/Invicton-Labs/module-lock/null/latest)
+
 This module is a solution to [this issue](https://github.com/hashicorp/terraform/issues/29867), which details how the source code of modules in the Terraform Registry can change without the version number changing. This issue opens a major security hole, allowing malicious code to be injected without users being aware.
 
 To use this module, simply drop it into a Terraform file in the base directory of your configuration, like so:
