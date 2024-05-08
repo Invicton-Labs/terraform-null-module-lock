@@ -17,7 +17,7 @@ locals {
 # Ensure that the modules file exists. It should ALWAYS exist, because this module
 # was initialized, and therefore there's at least one module.
 module "assert_modules_exists" {
-  source        = "github.com/Invicton-Labs/terraform-assertion-null?ref=f6bba7b4222a142c233c1825438e5f8c02378fb3"
+  source        = "github.com/Invicton-Labs/terraform-null-assertion?ref=f6bba7b4222a142c233c1825438e5f8c02378fb3"
   condition     = local.modules_exists
   error_message = "There is no modules config file in the expected location (${local.modules_json_file})."
 }
@@ -106,7 +106,7 @@ locals {
 # Assert that this module is in the modules file.
 # This is just a sanity check.
 module "assert_this_module_present" {
-  source    = "github.com/Invicton-Labs/terraform-assertion-null?ref=f6bba7b4222a142c233c1825438e5f8c02378fb3"
+  source    = "github.com/Invicton-Labs/terraform-null-assertion?ref=f6bba7b4222a142c233c1825438e5f8c02378fb3"
   condition = length(local.matching_modules) == 1
   error_message = length(local.matching_modules) == 0 ? (
     "The Invicton-Labs/module-lock/null module is not in the ${local.modules_json_file} file, which makes no sense since that's the module that's throwing this error.") : (
@@ -116,7 +116,7 @@ module "assert_this_module_present" {
 
 # Assert that there's only one copy of this module in the configuration.
 module "assert_single_use" {
-  source        = "github.com/Invicton-Labs/terraform-assertion-null?ref=f6bba7b4222a142c233c1825438e5f8c02378fb3"
+  source        = "github.com/Invicton-Labs/terraform-null-assertion?ref=f6bba7b4222a142c233c1825438e5f8c02378fb3"
   depends_on    = [module.assert_this_module_present]
   condition     = length(local.modules_with_same_source_or_hash) == 1
   error_message = "Only a single instance of the Invicton-Labs/module-lock/null module can exist in a Terraform configuration (found ${length(local.modules_with_same_source_or_hash)})"
@@ -124,7 +124,7 @@ module "assert_single_use" {
 
 # # Assert that the module hashes match the lock versions
 module "assert_module_hashes_match" {
-  source        = "github.com/Invicton-Labs/terraform-assertion-null?ref=f6bba7b4222a142c233c1825438e5f8c02378fb3"
+  source        = "github.com/Invicton-Labs/terraform-null-assertion?ref=f6bba7b4222a142c233c1825438e5f8c02378fb3"
   depends_on    = [module.assert_single_use]
   condition     = module.assert_this_module_present.checked && module.assert_single_use.checked && length(local.mismatched_modules) == 0
   error_message = "SECURITY RISK!!! The following ${length(local.mismatched_modules) > 1 ? "modules have different hashes, even though the sources/versions haven't changed" : "module has a different hash, even though the source/version hasn't changed"}: ${join(", ", [for k, v in local.mismatched_modules : k])}"
