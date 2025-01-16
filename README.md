@@ -12,7 +12,14 @@ module "module_lock" {
 }
 ```
 
-This module will automatically create a hash of all files in each module and store them in a lock file (`.terraform.modules.lock.json`). On every subsequent run, it will check the hashes of each downloaded module and compare them with the lock file hash. If there's a difference, when the source or version haven't changed, it will halt the execution during the plan phase and throw an error.
+This module will automatically create a hash of all files in each module and store them in a lock file (`.terraform.modules.lock.json`). On every subsequent run, it will check the hashes of each downloaded module and compare them with the lock file hash. If there's a difference, when the source or version haven't changed, it will halt the execution during the plan phase and throw an error. It will only check the consistency of modules with a remote source (i.e. not modules where the source is a local path) and that have a `version` specified or a `ref` query parameter in the source URL. There is also an option (`force_versioning`) that is enabled by default that throws an error if there are any modules with sources that support a version, but where a version is not specified.
+
+Currently, this mosule supports consistency checks for the following module sources:
+- Terraform Registry
+- GitHub
+- BitBucket
+- Any generic Git source
+- Mercurial
 
 This module will throw an error if there are multiple instances of it in a single Terraform configuration (don't want multiple modules editing the same lockfile!), so don't include it in modules, only in root configurations.
 
