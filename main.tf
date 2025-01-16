@@ -116,12 +116,6 @@ locals {
   ]
 }
 
-output "debug" {
-  value = {
-    all_modules_with_hashes = local.all_modules_with_hashes
-  }
-}
-
 # Assert that there's only one copy of this module in the configuration.
 module "assert_single_use" {
   source        = "github.com/Invicton-Labs/terraform-null-assertion?ref=30d308e4dab7f1e083abb4e6293b2865fccfffb5"

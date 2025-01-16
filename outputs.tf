@@ -3,7 +3,8 @@ output "force_versioning" {
   value       = var.force_versioning
 }
 
-output "consistent" {
-  description = "Whether the modules are consistent with the lock file versions."
-  value       = local_file.lock.content_base64sha256 != ""
+output "checked" {
+  description = "Whether the module consistency check is complete. Used for forcing other resources/modules to wait for this check to complete before running."
+  # This ternary just forces the response to wait for the lock file to be written
+  value = module.assert_no_unversioned_modules.checked
 }
